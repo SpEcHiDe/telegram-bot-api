@@ -14,7 +14,7 @@ RUN apk --no-cache add --update \
     git clone --recursive https://github.com/tdlib/telegram-bot-api.git && \
     cd telegram-bot-api && \
     mkdir build && \
-    cd build &&
+    cd build && \
     export CXXFLAGS="" && \
     export MAKEFLAGS="-j 2" && \
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. .. && \
