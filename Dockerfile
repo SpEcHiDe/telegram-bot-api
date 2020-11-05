@@ -36,6 +36,6 @@ COPY --from=builder /telegram-bot-api/bin/telegram-bot-api /usr/bin/telegram-bot
 # adds files from your Docker client’s current directory.
 COPY . .
 
-chmod a+x docker-entrypoint.sh
+RUN chmod a+x docker-entrypoint.sh
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
