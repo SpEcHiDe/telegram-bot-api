@@ -31,8 +31,8 @@ RUN apk add --update \
   php7 SplitSource.php --undo && \
   cd ../.. && \
   strip /telegram-bot-api/bin/telegram-bot-api && \
-  ls -l /telegram-bot-api/bin/telegram-bot-api* && \
-  
+  ls -l /telegram-bot-api/bin/telegram-bot-api*
+
 
 FROM alpine:latest
 
