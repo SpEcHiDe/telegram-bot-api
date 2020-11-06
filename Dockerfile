@@ -10,6 +10,7 @@ RUN apk --no-cache add --update \
     zlib-dev \
     openssl-dev \
     gperf \
+    php7 \
     cmake && \
     git clone --recursive https://github.com/tdlib/telegram-bot-api.git && \
     cd telegram-bot-api && \
@@ -18,7 +19,14 @@ RUN apk --no-cache add --update \
     export CXXFLAGS="" && \
     export MAKEFLAGS="-j 2" && \
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. .. && \
+    cmake --build . --target prepare_cross_compiling && \
+    cd ../td && \
+    php SplitSource.php && \
+    cd ../build && \
     cmake --build . --target install && \
+    cd ../td && \
+    php SplitSource.php --undo && \
+    cd ../../ && \
     strip /telegram-bot-api/bin/telegram-bot-api
 
 FROM alpine:latest
