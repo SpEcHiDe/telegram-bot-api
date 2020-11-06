@@ -1,9 +1,14 @@
 # creates a layer from the base Docker image.
-FROM alpine:latest AS builder
+FROM alpine:3.7 AS builder
 
 RUN apk update && \
-  apk upgrade && \
-  apk add --update \
+  apk upgrade
+
+ADD https://repos.php.earth/alpine/phpearth.rsa.pub /etc/apk/keys/phpearth.rsa.pub
+
+RUN echo "https://repos.php.earth/alpine/v3.7" >> /etc/apk/repositories
+
+RUN apk add --update \
     alpine-sdk \
     linux-headers \
     git \
