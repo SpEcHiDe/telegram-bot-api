@@ -6,7 +6,7 @@ RUN apk update && \
 
 RUN apk add --update \
     alpine-sdk \
-    libstdc++
+    libstdc++ \
     linux-headers \
     git \
     zlib-dev \
