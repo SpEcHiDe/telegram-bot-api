@@ -10,7 +10,7 @@ RUN apk update && \
     zlib-dev \
     openssl-dev \
     gperf \
-    php7 \
+    php7.2 \
     cmake && \
   php --version && \
   git clone --recursive https://github.com/tdlib/telegram-bot-api.git && \
@@ -22,11 +22,11 @@ RUN apk update && \
   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. .. && \
   cmake --build . --target prepare_cross_compiling && \
   cd ../td && \
-  php SplitSource.php && \
+  php7.2 SplitSource.php && \
   cd ../build && \
   cmake --build . --target install && \
   cd ../td && \
-  php SplitSource.php --undo && \
+  php7.2 SplitSource.php --undo && \
   cd ../.. && \
   strip /telegram-bot-api/bin/telegram-bot-api && \
   ls -l /telegram-bot-api/bin/telegram-bot-api* && \
