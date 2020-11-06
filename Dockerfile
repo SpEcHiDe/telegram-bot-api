@@ -1,14 +1,16 @@
 # creates a layer from the base Docker image.
-FROM alpine:3.7 AS builder
+FROM alpine:3.7
 
 RUN apk update && \
   apk upgrade
 
 RUN apk add --update \
     alpine-sdk \
+    libstdc++
     linux-headers \
     git \
     zlib-dev \
+    openssl \
     openssl-dev \
     gperf \
     php7 \
@@ -32,14 +34,9 @@ RUN apk add --update \
   cd ../.. && \
   ls -l /telegram-bot-api/bin/telegram-bot-api*
 
-
-FROM alpine:latest
-
 WORKDIR /app
 
-RUN apk --no-cache add --update openssl libstdc++
-
-COPY --from=builder /telegram-bot-api/bin/telegram-bot-api /usr/bin/telegram-bot-api
+RUN cp /telegram-bot-api/bin/telegram-bot-api /usr/bin/telegram-bot-api
 # each instruction creates one layer
 # Only the instructions RUN, COPY, ADD create layers.
 # copies 'requirements', to inside the container
