@@ -1,9 +1,9 @@
-#  creates a layer from the base Docker image.
+# creates a layer from the base Docker image.
 FROM alpine:latest AS builder
 
-# Dockerfile stolen from
-# https://hub.docker.com/r/julyighor/telegram-bot-api
-RUN apk --no-cache add --update \
+RUN apk update && \
+  apk upgrade && \
+  apk add --update \
     alpine-sdk \
     linux-headers \
     git \
@@ -12,22 +12,24 @@ RUN apk --no-cache add --update \
     gperf \
     php7 \
     cmake && \
-    git clone --recursive https://github.com/tdlib/telegram-bot-api.git && \
-    cd telegram-bot-api && \
-    mkdir build && \
-    cd build && \
-    export CXXFLAGS="" && \
-    export MAKEFLAGS="-j 2" && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. .. && \
-    cmake --build . --target prepare_cross_compiling && \
-    cd ../td && \
-    php SplitSource.php && \
-    cd ../build && \
-    cmake --build . --target install && \
-    cd ../td && \
-    php SplitSource.php --undo && \
-    cd ../../ && \
-    strip /telegram-bot-api/bin/telegram-bot-api
+  git clone --recursive https://github.com/tdlib/telegram-bot-api.git && \
+  cd telegram-bot-api && \
+  rm -rf build && \
+  mkdir build && \
+  cd build && \
+  export CXXFLAGS="" && \
+  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. .. && \
+  cmake --build . --target prepare_cross_compiling && \
+  cd ../td && \
+  php SplitSource.php && \
+  cd ../build && \
+  cmake --build . --target install && \
+  cd ../td && \
+  php SplitSource.php --undo && \
+  cd ../.. && \
+  strip /telegram-bot-api/bin/telegram-bot-api && \
+  ls -l /telegram-bot-api/bin/telegram-bot-api* && \
+  
 
 FROM alpine:latest
 
