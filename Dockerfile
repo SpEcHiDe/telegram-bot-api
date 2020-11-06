@@ -12,6 +12,7 @@ RUN apk update && \
     gperf \
     php7 \
     cmake && \
+  php --version && \
   git clone --recursive https://github.com/tdlib/telegram-bot-api.git && \
   cd telegram-bot-api && \
   rm -rf build && \
