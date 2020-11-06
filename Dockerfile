@@ -4,10 +4,6 @@ FROM alpine:3.7 AS builder
 RUN apk update && \
   apk upgrade
 
-ADD https://repos.php.earth/alpine/phpearth.rsa.pub /etc/apk/keys/phpearth.rsa.pub
-
-RUN echo "https://repos.php.earth/alpine/v3.7" >> /etc/apk/repositories
-
 RUN apk add --update \
     alpine-sdk \
     linux-headers \
@@ -15,7 +11,8 @@ RUN apk add --update \
     zlib-dev \
     openssl-dev \
     gperf \
-    php7.2 \
+    php7 \
+    php7-ctype \
     cmake && \
   php --version && \
   git clone --recursive https://github.com/tdlib/telegram-bot-api.git && \
@@ -27,11 +24,11 @@ RUN apk add --update \
   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. .. && \
   cmake --build . --target prepare_cross_compiling && \
   cd ../td && \
-  php7.2 SplitSource.php && \
+  php SplitSource.php && \
   cd ../build && \
   cmake --build . --target install && \
   cd ../td && \
-  php7.2 SplitSource.php --undo && \
+  php7 SplitSource.php --undo && \
   cd ../.. && \
   strip /telegram-bot-api/bin/telegram-bot-api && \
   ls -l /telegram-bot-api/bin/telegram-bot-api* && \
